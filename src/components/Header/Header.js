@@ -1,8 +1,9 @@
 import React from "react";
-
+import './header.css';
 import resumeSvg from "../../assets/resume.svg";
 
 import styles from "./Header.module.css";
+import { NavLink } from "react-router-dom";
 
 function Header() {
   return (
@@ -18,6 +19,12 @@ function Header() {
       <div className={styles.right}>
         <img src={resumeSvg} alt="Resume" />
       </div>
+      <NavLink to="/login">
+      <button className="btn1">Login</button>
+      </NavLink>
+      <NavLink to="/signup">
+      <button className="btn2">SignIn</button>
+      </NavLink>
     </div>
   );
 }
