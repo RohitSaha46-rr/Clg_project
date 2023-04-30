@@ -1,32 +1,46 @@
 import React, { useState } from "react";
 // import * as React from 'react';
 import "./signup.css";
+import { NavLink ,useNavigate} from "react-router-dom";
+import { postData } from "./Api";
 
 const Signup = () => {
-
+   const navigate=useNavigate();
     const [userSignUp, setUserSignUp] = useState({
-        user_name: "",
+        name: "",
         email: "",
-        phone_number: "",
+        mobile: "",
         password: "",
         Re_password: ""
     });
+    const [checkBox,setCheckBox]=useState(false);
 
-    const [records, setRecords] = useState([]);
 
     const handleInput = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-        console.log(name, value);
         setUserSignUp({ ...userSignUp, [name]: value });
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const newRecord = { ...userSignUp, id: new Date().getTime().toString() }
-        console.log(records);
-        setRecords([...records, newRecord]);
-        console.log(records);
+            if(userSignUp.password===userSignUp.Re_password){
+                const userLogin = async () => {
+                    const res = await postData('user/signup',userSignUp, "POST");
+                    if (res.status === 200) {
+                        navigate('/login')
+                    }else{
+                       
+                        alert(res.message)
+                    }
+        
+                }
+                
+                userLogin()
+            }else{
+                alert('wrong password')
+            }
+           
     }
 
     return (
@@ -43,18 +57,18 @@ const Signup = () => {
                             <label htmlFor='user_name'></label>
                             <input type='text' autoComplete='off'
                                 placeholder=' Your Name'
-                                value={userSignUp.user_name}
+                                value={userSignUp.name}
                                 onChange={handleInput}
-                                name='user_name' id='user_name' />
+                                name='name' id='user_name' />
                         </div>
 
                         <div>
                             <label htmlFor='phone_number'></label>
                             <input type='number' autoComplete='off'
                                 placeholder=' Your Phone Number'
-                                value={userSignUp.phone_number}
+                                value={userSignUp.mobile}
                                 onChange={handleInput}
-                                name='phone_number' id='phone_number' />
+                                name='mobile' id='phone_number' />
                         </div>
 
                         <div>
@@ -85,14 +99,19 @@ const Signup = () => {
                         </div>
 
                         <div className="check_div">
-                            <input className="checkbox" type="checkbox" label="" />
+                            <input className="checkbox" type="checkbox" label="" onClick={(e)=>{
+                                    setCheckBox(e.target.checked)
+                            }} />
                             <p style={{paddingTop:"25px",paddingLeft:"10px"}}>I agree all statements in <u>Terms of service </u></p>
                         </div>
-                        <button className='btn' type='submit'><b>Sign Up</b></button>
+                        {
+                            checkBox? <button className='btn' type='submit'><b>Sign Up</b></button>:<></>
+                        }
+                       
                     </form>
 
                     <div className="lgin_div">
-                        <p>have already an account ?  <button className=" login_btn">Login</button></p>
+                        <p>have already an account ?  <NavLink to='/login' className=" login_btn">Login</NavLink></p>
 
                     </div>
                 </div>

@@ -3,19 +3,20 @@ import "./UserLogin.css"
 import pic from './login_img.png'
 import google_pic from './gg-pic3.png';
 import fb_pic from './ff_pic.png';
+import { NavLink,useNavigate } from 'react-router-dom';
+import { postData } from './Api';
 const Multipleinputs = () => {
+
+    const navigate=useNavigate();
 
     const [userLogin, setUserLogin] = useState({
         email: "",
         password: ""
     });
 
-    const [records, setRecords] = useState([]);
-
     const handleInput = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-        console.log(name, value);
         setUserLogin({ ...userLogin, [name]: value });
 
     }
@@ -23,10 +24,21 @@ const Multipleinputs = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const newRecord = { ...userLogin, id: new Date().getTime().toString() }
-        console.log(records);
-        setRecords([...records, newRecord]);
-        console.log(records);
+        const apiCall = async () => {
+            const res = await postData('user/signin',userLogin, "POST");
+            if (res.status === 200) {
+                localStorage.setItem('access_token',res.data.access_token)
+                localStorage.setItem('user_id',res.data.userId)
+                localStorage.setItem('user_name',res.data.userName)
+                navigate('/')
+            }else{
+               
+                alert(res.message)
+            }
+
+        }
+        
+        apiCall()
     }
 
 
@@ -90,7 +102,7 @@ const Multipleinputs = () => {
                         </div>
 
                     </div>
-                    <button className='create frgt_div' type='submit' > Create your Account &#xf061;</button>
+                    <NavLink to='/signup' className='create frgt_div' type='submit' > Create your Account &#xf061;</NavLink>
 
 
 

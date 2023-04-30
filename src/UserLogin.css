@@ -104,6 +104,7 @@
 
 .login .frgt_div{
     margin-top: 10px;
+   
     
 }
 
@@ -114,6 +115,8 @@
     border: none;
     font-family: FontAwesome;
     font-size: 18px;
+    text-decoration: none;
+    color: black;
 }
 
 .login .or_login{
