@@ -13,7 +13,7 @@ route.post('/user/signup', async (req, res) => {
         let userData = await user.find({
             $or: [{ email }, { mobile }]
         })
-        // console.log(userData,"user")
+         console.log(userData,"user")
        
 
         if (userData?.length == 0) {
